@@ -34,7 +34,7 @@ def newListing(url, message, phone_num, sleep_time):
                 break
 
 def usage():
-    print('Usage:\n...-m --message: flag to allow send message of new founding\n-p --phone: phone number to send the message (you can also change defaults in python file instead)\n-u --url: ebay url of new listings (it is much easier to change defaul in py file (also make sure url is for new listings))\n-s --sleep: change default sleep time, default is 60sec (or change in py file)')
+    print('Usage:\n-m --message: flag to allow send message of new founding\n-p --phone: phone number to send the message (you can also change defaults in python file instead)\n-u --url: ebay url of new listings (it is much easier to change default in py file (also make sure url is for new listings))\n-s --sleep: change default sleep time, default is 60sec (or change in py file)')
 
 def main():
     try:
