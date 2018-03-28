@@ -16,7 +16,7 @@ def getLinks(url):
     return soup.find_all('a', {'class':'vip'})
 
 
-def newListing(url, message, phone_num, sleep_time):
+def newListing(url, message, phone_num, sleep_time, open_links):
     while(True):
         time.sleep(sleep_time)
         print('Checking....')
@@ -24,21 +24,22 @@ def newListing(url, message, phone_num, sleep_time):
             itm_link = link.get('href')
             if not itm_link in seen:
                 print(itm_link)
-                webbrowser.open(itm_link)
                 seen.add(itm_link)
+                os.system("terminal-notifier -title 'New Item Found' -message 'Open " + itm_link + "' -open '" + itm_link + "'")
+                if open_links:
+                    webbrowser.open(itm_link)
                 if message:
-                    print('osascript message.scpt '+ phone_num + ' "' + itm_link +'"')
                     os.system('osascript message.scpt '+ phone_num + ' "' + itm_link +'"')
             else:
                 print('No more found...')
                 break
 
 def usage():
-    print('Usage:\n-m --message: flag to allow send message of new founding\n-p --phone: phone number to send the message (you can also change defaults in python file instead)\n-u --url: ebay url of new listings (it is much easier to change default in py file (also make sure url is for new listings))\n-s --sleep: change default sleep time, default is 60sec (or change in py file)')
+    print('Usage:\n-m --message: flag to allow send message of new founding\n-p --phone: phone number to send the message (you can also change defaults in python file instead)\n-u --url: ebay url of new listings (it is much easier to change default in py file (also make sure url is for new listings))\n-s --sleep: change default sleep time, default is 60sec (or change in py file)\n-o --open: set open_links to true to automatically open links')
 
 def main():
     try:
-        opts, args = getopt.getopt(sys.argv[1:], 'hmp:u:s:', ['help', 'message','phone=', 'url=', 'sleep='])
+        opts, args = getopt.getopt(sys.argv[1:], 'hmp:u:s:o', ['help', 'message','phone=', 'url=', 'sleep=', 'open'])
     except getopt.GetoptError as err:
         print(str(err))
         usage()
@@ -50,6 +51,7 @@ def main():
     phone_num = ''
     sleep_time = 60
     message = False
+    open_links = False
 
     for o, a in opts:
         if o in ('-h', '--help'):
@@ -65,6 +67,8 @@ def main():
             url = a
         elif o in ('-s', '-sleep'):
             sleep_time = a
+        elif o in ('-o', '--open'):
+            open_links = True
         else:
             print 'unhandled option'
 
@@ -75,7 +79,7 @@ def main():
             seen.add(itm_link)
             print(itm_link)
     # while
-    newListing(url, message, phone_num, sleep_time);
+    newListing(url, message, phone_num, sleep_time, open_links);
 
 
 if __name__ == "__main__":
