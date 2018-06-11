@@ -13,7 +13,7 @@ seen = set([])
 def getLinks(url):
     r = requests.get(url).content
     soup = BeautifulSoup(r)
-    return soup.find_all('a', {'class':'vip'})
+    return soup.find_all('a', {'class':'s-item__link'})
 
 
 def newListing(url, message, phone_num, sleep_time, open_links):
